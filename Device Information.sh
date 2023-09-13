@@ -156,7 +156,7 @@ else
 	echo "FV Enabled"
 fi)
 
-OS=$(sw_vers --productVersion)
+OS=$(sw_vers -productVersion)
 
 OSNAME=$(curl -s "https://support.apple.com/en-us/HT201260" | grep -A 22 "Latest version" | grep -m1 -B 2 $(sw_vers -productVersion | awk -F '.' '{print $1}') | grep macOS | sed -e 's#</tr><tr><td>##' -e 's#<br>##')
 
