@@ -172,7 +172,7 @@ CHIP=$(system_profiler SPHardwareDataType | grep Chip | awk -F ':' '{print $2}' 
 
 RAM=$(system_profiler SPHardwareDataType | grep Memory | awk -F ':' '{print $2}' | xargs)
 
-BANNER="/System/Library/Desktop Pictures/$(echo $OSNAME | awk -F 'macOS ' '{print $2}') Graphic.heic"
+BANNER=$(ls /System/Library/Desktop\ Pictures/$(echo $OSNAME | awk -F 'macOS ' '{print $2}')*.heic)
 
 #########################################################################################
 # Information List
