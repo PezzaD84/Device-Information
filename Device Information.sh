@@ -2,7 +2,7 @@
 #
 # Author  : Perry Driscoll - https://github.com/PezzaD84
 # Created : 23/10/2020
-# Updated : 12/9/2023
+# Updated : 13/12/2023
 # Version : v3
 #
 #########################################################################################
@@ -64,7 +64,7 @@ else
 	
 	installedVersion=$(dialog -v | sed 's/./ /6' | awk '{print $1}')
 	
-	latestVersion=$(curl -sfL "https://github.com/bartreardon/swiftDialog/releases/latest" | tr '"' "\n" | grep -i "expanded_assets" | head -1 | tr '/' ' ' | awk '{print $7}' | tr -d 'v')
+	latestVersion=$(curl -sfL "https://github.com/bartreardon/swiftDialog/releases/latest" | tr '"' "\n" | grep -i "expanded_assets" | head -1 | tr '/' ' ' | awk '{print $7}' | tr -d 'v' | awk -F '-' '{print $1}')
 	
 	if [[ $installedVersion != $latestVersion ]]; then
 		echo "Dialog needs updating"
@@ -160,13 +160,11 @@ OS=$(sw_vers -productVersion)
 
 OSNAME=$(curl -s "https://support.apple.com/en-us/HT201260" | grep -A 22 "Latest version" | grep -m1 -B 2 $(sw_vers -productVersion | awk -F '.' '{print $1}') | grep macOS | sed -e 's#</tr><tr><td>##' -e 's#<br>##' -e 's#</td>##')
 
-free_disk_space=$(osascript -l 'JavaScript' -e "ObjC.import('Foundation'); var freeSpaceBytesRef=Ref(); $.NSURL.fileURLWithPath('/').getResourceValueForKeyError(freeSpaceBytesRef, 'NSURLVolumeAvailableCapacityForImportantUsageKey', null); Math.round(ObjC.unwrap(freeSpaceBytesRef[0]) / 1000000000)")
+freeSpace=$(system_profiler SPStorageDataType | grep -m1 -A3 Data | grep Free | awk -F ':' '{print $2}' | awk -F '(' '{print $1}' | awk -F '.' '{print $1}')
+totalSpace=$(system_profiler SPStorageDataType | grep -m1 -A3 Data | grep Capacity | awk -F ':' '{print $2}' | awk -F '(' '{print $1}' | awk -F '.' '{print $1}')	
+percent=$((100*$freeSpace/$totalSpace))
 
-TOTALDISKSPACE=$(diskutil info /dev/disk1 | grep "Disk Size" | awk -F ':' '{print $2}' | awk -F '.' '{print $1}')
-			
-percent=$((100*$free_disk_space/$TOTALDISKSPACE))
-
-FREESPACE=$(echo ""$free_disk_space"GB "$percent"% Free")
+FREESPACE=$(echo ""$freeSpace"GB "$percent"% Free")
 
 CHIP=$(system_profiler SPHardwareDataType | grep Chip | awk -F ':' '{print $2}' | xargs)
 
