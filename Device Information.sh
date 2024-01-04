@@ -158,7 +158,7 @@ fi)
 
 OS=$(sw_vers -productVersion)
 
-OSNAME=$(curl -s "https://support.apple.com/en-us/HT201260" | grep -A 22 "Latest version" | grep -m1 -B 2 $(sw_vers -productVersion | awk -F '.' '{print $1}') | grep macOS | sed -e 's#</tr><tr><td>##' -e 's#<br>##' -e 's#</td>##')
+OSNAME=$(awk '/SOFTWARE LICENSE AGREEMENT FOR macOS/' '/System/Library/CoreServices/Setup Assistant.app/Contents/Resources/en.lproj/OSXSoftwareLicense.rtf' | awk -F 'macOS ' '{print $NF}' | awk '{print substr($0, 0, length($0)-1)}')
 
 freeSpace=$(system_profiler SPStorageDataType | grep -m1 -A3 Data | grep Free | awk -F ':' '{print $2}' | awk -F '(' '{print $1}' | awk -F '.' '{print $1}')
 totalSpace=$(system_profiler SPStorageDataType | grep -m1 -A3 Data | grep Capacity | awk -F ':' '{print $2}' | awk -F '(' '{print $1}' | awk -F '.' '{print $1}')	
@@ -170,7 +170,7 @@ CHIP=$(system_profiler SPHardwareDataType | grep Chip | awk -F ':' '{print $2}' 
 
 RAM=$(system_profiler SPHardwareDataType | grep Memory | awk -F ':' '{print $2}' | xargs)
 
-BANNER=$(ls /System/Library/Desktop\ Pictures/$(echo $OSNAME | awk -F 'macOS ' '{print $2}')*.heic)
+BANNER=$(ls /System/Library/Desktop\ Pictures/$OSNAME*.heic)
 
 #########################################################################################
 # Information List
