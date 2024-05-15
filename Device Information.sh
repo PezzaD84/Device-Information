@@ -89,8 +89,7 @@ sharename=$(scutil --get HostName)
 
 username=$(ls -l /dev/console | awk '{ print $3 }')
 
-networkname=$(/System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I | awk -F: '/ SSID/{print $2}')
-
+networkname=$(/usr/sbin/networksetup -listallhardwareports | /usr/bin/awk '/Wi-Fi/{getline; print $2}' | /usr/bin/xargs networksetup -getairportnetwork | /usr/bin/awk -F ' ' '{print $NF}')
 ipadd=$(while read -r line; do
 	sname=$(echo "$line" | awk -F  "(, )|(: )|[)]" '{print $2}')
 	sdev=$(echo "$line" | awk -F  "(, )|(: )|[)]" '{print $4}')
