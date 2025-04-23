@@ -170,11 +170,21 @@ CHIP=$(system_profiler SPHardwareDataType | grep Chip | awk -F ':' '{print $2}' 
 RAM=$(system_profiler SPHardwareDataType | grep Memory | awk -F ':' '{print $2}' | xargs)
 
 if [[ $OSNAME == "Sequoia" ]]; then
-	BANNER=$(ls /System/Library/Desktop\ Pictures/iMac\ Blue.heic)
+	background=(
+		"/System/Library/Desktop Pictures/iMac Blue.heic"
+		"/System/Library/Desktop Pictures/iMac Green.heic"
+		"/System/Library/Desktop Pictures/iMac Orange.heic"
+		"/System/Library/Desktop Pictures/iMac Pink.heic"
+		"/System/Library/Desktop Pictures/iMac Purple.heic"
+		"/System/Library/Desktop Pictures/iMac Silver.heic"
+		"/System/Library/Desktop Pictures/iMac Yellow.heic"
+	)
+		
+	BANNER=${background[ $RANDOM % ${#background[@]} ]}
 else
 	BANNER=$(ls /System/Library/Desktop\ Pictures/$OSNAME*.heic)
 fi
-	
+
 #########################################################################################
 # Information List
 #########################################################################################
