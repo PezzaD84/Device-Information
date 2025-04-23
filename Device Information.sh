@@ -2,8 +2,8 @@
 #
 # Author  : Perry Driscoll - https://github.com/PezzaD84
 # Created : 23/10/2020
-# Updated : 13/12/2023
-# Version : v3
+# Updated : 23/4/2025
+# Version : v3.1
 #
 #########################################################################################
 # Description:
@@ -169,8 +169,12 @@ CHIP=$(system_profiler SPHardwareDataType | grep Chip | awk -F ':' '{print $2}' 
 
 RAM=$(system_profiler SPHardwareDataType | grep Memory | awk -F ':' '{print $2}' | xargs)
 
-BANNER=$(ls /System/Library/Desktop\ Pictures/$OSNAME*.heic)
-
+if [[ $OSNAME == "Sequoia" ]]; then
+	BANNER=$(ls /System/Library/Desktop\ Pictures/iMac\ Blue.heic)
+else
+	BANNER=$(ls /System/Library/Desktop\ Pictures/$OSNAME*.heic)
+fi
+	
 #########################################################################################
 # Information List
 #########################################################################################
